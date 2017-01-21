@@ -2,7 +2,7 @@
 //  SMCWrapper.m
 //
 //  Created by Fergus Morrow on 27/09/2014
-//  Licensed under the GNU General Public License. 
+//  Licensed under the GNU General Public License.
 
 #import "SMCWrapper.h"
 
@@ -101,7 +101,7 @@ static SMCWrapper *sharedInstance = nil;
  *  values)
  */
 -(void) _ultostr:(char *)str
-          forValue:(UInt32)val
+        forValue:(UInt32)val
 {
     str[0] = '\0';
     sprintf(str, "%c%c%c%c",
@@ -115,7 +115,7 @@ static SMCWrapper *sharedInstance = nil;
  * SMCCall:forKeyData:outputKeyDataIn - A wrapper method around
  *  IOConnectCallStructMethod - which is responsible for IOService calls.
  */
- 
+
 -(kern_return_t) SMCCall:(int)index
               forKeyData:(SMCKeyData_t *)inputStructure
          outputKeyDataIn:(SMCKeyData_t *)outputStructure
@@ -158,7 +158,7 @@ static SMCWrapper *sharedInstance = nil;
     result = [self SMCCall: KERNEL_INDEX_SMC
                 forKeyData: &inputStructure
            outputKeyDataIn: &outputStructure];
-
+    
     
     if (result != kIOReturnSuccess){
         return result;
@@ -167,7 +167,7 @@ static SMCWrapper *sharedInstance = nil;
     // Populate our output structure (@todo - is this needed..?
     //  dataSize is, afterall passed in by reference.)
     val->dataSize = outputStructure.keyInfo.dataSize;
-
+    
     [self _ultostr: val->dataType
           forValue: outputStructure.keyInfo.dataType];
     
@@ -196,18 +196,21 @@ static SMCWrapper *sharedInstance = nil;
  */
 -(BOOL) readKey:(char *)key intoNumber:(NSNumber **)value{
     NSString *stringVal;
-    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    //NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
     NSNumber *num;
     num = [NSNumber numberWithInt:0];
- 
+    
     if (! [self readKey:key asString:&stringVal] ){
         num = [NSNumber numberWithInt:0];
         *value = num;
         return NO;
     }
-    
-    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    num = [f numberFromString:stringVal];
+    stringVal = [stringVal stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSDecimalNumber *amountNumber = [NSDecimalNumber decimalNumberWithString:stringVal];
+    //f.numberStyle = NSNumberFormatterDecimalStyle;
+    //f.maximumFractionDigits = 2;
+    //num = [f numberFromString:stringVal];
+    num = amountNumber;
     *value = num;
     return YES;
 }
@@ -255,9 +258,9 @@ static SMCWrapper *sharedInstance = nil;
  *  representation of the value.
  */
 -(void) getStringRepresentation: (SMCBytes_t)bytes
-                          forSize: (UInt32)dataSize
-                           ofType: (UInt32Char_t)dataType
-                         inBuffer: (char *)str
+                        forSize: (UInt32)dataSize
+                         ofType: (UInt32Char_t)dataType
+                       inBuffer: (char *)str
 {
     if ((strcmp(dataType, DATATYPE_UINT8) == 0) ||
         (strcmp(dataType, DATATYPE_UINT16) == 0) ||
