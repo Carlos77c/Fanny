@@ -3,7 +3,7 @@
 //  SMCInfo
 //
 //  Created by Fergus Morrow on 27/09/2014, based on work by Apple Corp.
-//  Licensed under the GNU General Public License. 
+//  Licensed under the GNU General Public License.
 
 #import <stdio.h>
 #import <string.h>
@@ -29,7 +29,7 @@
 
 // String<->Unsigned Integer Helper Methods.
 -(void) _ultostr:(char *)str
-          forValue:(UInt32)val;
+        forValue:(UInt32)val;
 
 -(UInt32) _strtoul:(char *)str
            forSize:(int)size
