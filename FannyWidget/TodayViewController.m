@@ -16,9 +16,9 @@
     // NSTextField
     __weak IBOutlet NSTextField *temperatureTextField;
     __weak IBOutlet NSTextField *fanRPMTextField;
-    __weak IBOutlet NSTextField *fanTarTextField;
-    __weak IBOutlet NSTextField *fanMinTextField;
-    __weak IBOutlet NSTextField *fanMaxTextField;
+    //__weak IBOutlet NSTextField *fanTarTextField;
+    //__weak IBOutlet NSTextField *fanMinTextField;
+    //__weak IBOutlet NSTextField *fanMaxTextField;
     
     // NSTimer
     NSTimer *updateWidgetTimer;
@@ -39,7 +39,7 @@
 @implementation TodayViewController
 
 -(void)viewWillDisappear {
-    NSLog(@"viewWillDisappear");
+    //NSLog(@"viewWillDisappear");
 }
 
 -(IBAction)radioButtonClicked:(id)sender {
@@ -48,7 +48,7 @@
     
     // Get tag number so we know which fan to display // Starts at 0
     fanToDisplay = (int)[tempButton tag];
-    NSLog(@"radio button clicked with tag: %d", (int)[tempButton tag]);
+    //NSLog(@"radio button clicked with tag: %d", (int)[tempButton tag]);
     
     // Update stats with fan selected
     [self updateWidget];
@@ -62,7 +62,7 @@
     // Get number of fans
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"TodayExtensionSharingDefaults"];
     numberOfFans = (int)[defaults integerForKey:@"numberOfFans"];
-    NSLog(@"Number of fans: %d", numberOfFans);
+    //NSLog(@"Number of fans: %d", numberOfFans);
     
     // Set padding between buttons
     staticPadding = 30;
@@ -72,11 +72,11 @@
 }
 
 -(void)viewDidAppear {
-    NSLog(@"viewDidAppear");
+    //NSLog(@"viewDidAppear");
     // Get stats timer
     [updateWidgetTimer invalidate];
     updateWidgetTimer = nil;
-    updateWidgetTimer = [NSTimer scheduledTimerWithTimeInterval:2.5
+    updateWidgetTimer = [NSTimer scheduledTimerWithTimeInterval:5
                                                          target:self
                                                        selector:@selector(updateWidget)
                                                        userInfo:nil
@@ -100,13 +100,13 @@
     
     if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.DanielStorm.Fanny"] count] < 1) {
         // Open app
-        NSLog(@"app not running");
+        //NSLog(@"app not running");
         
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"Fanny://"]];
     }
     if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.DanielStorm.Fanny"] count] == 1) {
         // App running // Do nothing
-        NSLog(@"app running");
+        //NSLog(@"app running");
     }
     
     // Create radio buttons
@@ -115,7 +115,7 @@
         radioButton = [NSButton new];
         [radioButton setButtonType: NSRadioButton]; // Set button type
         [radioButton setTag: (i - numberOfFans + 1) * -1]; // Set tag to fan number // Starts at 0
-        [radioButton setControlSize:NSMiniControlSize]; // Make mini
+        [radioButton setControlSize:NSControlSizeMini]; // Make mini
         [radioButton setFrame:CGRectMake(self.view.frame.size.width - (i * staticPadding + 36), self.view.frame.size.height - 23, 22, 26)]; // Set frame
         [radioButton setTarget:self];
         [radioButton setAction:@selector(radioButtonClicked:)]; // Add action
@@ -133,24 +133,24 @@
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"TodayExtensionSharingDefaults"];
     
     // Update temperature
-    float temperatureFloat = [defaults floatForKey:@"temperature"];
-    [temperatureTextField setStringValue:[NSString stringWithFormat:@"%.02f °",temperatureFloat]];
+    int temperatureFloat = roundf([defaults floatForKey:@"temperature"]);
+    [temperatureTextField setStringValue:[NSString stringWithFormat:@"%d °",temperatureFloat]];
     
     // Update fan actual
     int fanRPMInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dActual", fanToDisplay]];
     [fanRPMTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanRPMInt]];
     
     // Update fan target
-    int fanTarInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dTarget", fanToDisplay]];
-    [fanTarTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanTarInt]];
+    //int fanTarInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dTarget", fanToDisplay]];
+    //[fanTarTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanTarInt]];
     
     // Update fan minimum
-    int fanMinInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dMin", fanToDisplay]];
-    [fanMinTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanMinInt]];
+    //int fanMinInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dMin", fanToDisplay]];
+    //[fanMinTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanMinInt]];
     
     // Update fan maximum
-    int fanMaxInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dMax", fanToDisplay]];
-    [fanMaxTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanMaxInt]];
+    //int fanMaxInt = (int)[defaults integerForKey:[NSString stringWithFormat:@"fan%dMax", fanToDisplay]];
+    //[fanMaxTextField setStringValue:[NSString stringWithFormat:@"%d RPM",fanMaxInt]];
 }
 
 -(void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult result))completionHandler {
@@ -158,7 +158,7 @@
     
     [self updateWidget];
     
-    NSLog(@"NCUpdateResultNewData");
+    //NSLog(@"NCUpdateResultNewData");
     completionHandler(NCUpdateResultNewData);
 }
 

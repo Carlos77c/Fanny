@@ -26,9 +26,9 @@
     // Fan
     NSMenuItem *fanNumberMenuItemDefault;
     NSMenuItem *fanRPMMenuItemDefault;
-    NSMenuItem *fanTarMenuItemDefault;
-    NSMenuItem *fanMinMenuItemDefault;
-    NSMenuItem *fanMaxMenuItemDefault;
+    //NSMenuItem *fanTarMenuItemDefault;
+    //NSMenuItem *fanMinMenuItemDefault;
+    //NSMenuItem *fanMaxMenuItemDefault;
     
     // NSString
     NSString *osxMode;
@@ -54,12 +54,12 @@
     osxMode = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
     
     if (!osxMode) {
-        NSLog(@"Dark mode disabled");
+        //NSLog(@"Dark mode disabled");
         titleColor = [NSColor blackColor];
         bodyColor = [NSColor darkGrayColor];
     }
     else {
-        NSLog(@"Dark mode enabled");
+        //NSLog(@"Dark mode enabled");
         titleColor = [NSColor whiteColor];
         bodyColor = [NSColor lightGrayColor];
     }
@@ -77,32 +77,32 @@
     cpuTempMenuItem = [NSMenuItem new];
     fanNumberMenuItemDefault = [NSMenuItem new];
     fanRPMMenuItemDefault = [NSMenuItem new];
-    fanMinMenuItemDefault = [NSMenuItem new];
-    fanMaxMenuItemDefault = [NSMenuItem new];
-    fanTarMenuItemDefault = [NSMenuItem new];
+    //fanMinMenuItemDefault = [NSMenuItem new];
+    //fanMaxMenuItemDefault = [NSMenuItem new];
+    //fanTarMenuItemDefault = [NSMenuItem new];
     
     // Set default titles of labels
     [fanNumberMenuItemDefault setTitleWithMnemonic:@"Fan: #0"];
     [fanRPMMenuItemDefault setTitleWithMnemonic:@"Current: 0000 RPM"];
-    [fanMinMenuItemDefault setTitleWithMnemonic:@"Min: 0000 RPM"];
-    [fanMaxMenuItemDefault setTitleWithMnemonic:@"Max: 0000 RPM"];
-    [fanTarMenuItemDefault setTitleWithMnemonic:@"Target: 0000 RPM"];
-    [cpuTempMenuItem setTitleWithMnemonic:@"CPU: 0.0°"];
+    //[fanMinMenuItemDefault setTitleWithMnemonic:@"Min: 0000 RPM"];
+    //[fanMaxMenuItemDefault setTitleWithMnemonic:@"Max: 0000 RPM"];
+    //[fanTarMenuItemDefault setTitleWithMnemonic:@"Target: 0000 RPM"];
+    [cpuTempMenuItem setTitleWithMnemonic:@"CPU: 0°"];
     
     // Menu buttons
-    NSMenuItem *info = [[NSMenuItem alloc]initWithTitle:@"Info" action:@selector(infoClicked:) keyEquivalent:@"i"];
+    //NSMenuItem *info = [[NSMenuItem alloc]initWithTitle:@"Info" action:@selector(infoClicked:) keyEquivalent:@"i"];
     NSMenuItem *quit = [[NSMenuItem alloc]initWithTitle:@"Quit" action:@selector(quitClicked:) keyEquivalent:@"q"];
 
     // Add items to menu
     [menu addItem:fanNumberMenuItemDefault]; // Fan number
     [menu addItem:fanRPMMenuItemDefault]; // Actual
-    [menu addItem:fanMinMenuItemDefault]; // Minimum
-    [menu addItem:fanMaxMenuItemDefault]; // Maximum
-    [menu addItem:fanTarMenuItemDefault]; // Target
+    //[menu addItem:fanMinMenuItemDefault]; // Minimum
+    //[menu addItem:fanMaxMenuItemDefault]; // Maximum
+    //[menu addItem:fanTarMenuItemDefault]; // Target
     [menu addItem:[NSMenuItem separatorItem]];
     [menu addItem:cpuTempMenuItem]; // CPU Temp
     [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItem:info];
+    //[menu addItem:info];
     [menu addItem:quit];
     
     // Add menu to status bar
@@ -114,7 +114,7 @@
     // Get stats timer
     [updateStatsTimer invalidate];
     updateStatsTimer = nil;
-    updateStatsTimer = [NSTimer scheduledTimerWithTimeInterval:2.5
+    updateStatsTimer = [NSTimer scheduledTimerWithTimeInterval:5
                                                         target:self
                                                       selector:@selector(getStats)
                                                       userInfo:nil
@@ -172,22 +172,22 @@
     for (int i = 0; i < numberOfFans; i++) {
         
         // Stats and info
-        NSString *fanID;
+        //NSString *fanID;
         NSNumber *fanRPM;
-        NSNumber *tarRPM;
-        NSNumber *minRPM;
-        NSNumber *maxRPM;
-        NSNumber *safeRPM;
+        //NSNumber *tarRPM;
+        //NSNumber *minRPM;
+        //NSNumber *maxRPM;
+        //NSNumber *safeRPM;
         NSString *fanNumberDefault;
         
         // NSMenuItems
         NSMenuItem *fanNumberMenuItem = [NSMenuItem new];
         NSMenuItem *fanRPMMenuItem = [NSMenuItem new];
-        NSMenuItem *fanMinMenuItem = [NSMenuItem new];
-        NSMenuItem *fanMaxMenuItem = [NSMenuItem new];
-        NSMenuItem *fanTarMenuItem = [NSMenuItem new];
+        //NSMenuItem *fanMinMenuItem = [NSMenuItem new];
+        //NSMenuItem *fanMaxMenuItem = [NSMenuItem new];
+        //NSMenuItem *fanTarMenuItem = [NSMenuItem new];
         
-        NSLog(@"\n\nFan #%d", i+1);
+        //NSLog(@"\n\nFan #%d", i+1);
         
         // Set title of fan number menu label // Starts at 0 so add 1
         [fanNumberMenuItem setTitleWithMnemonic:[NSString stringWithFormat:@"Fan: #%d", i+1]];
@@ -200,15 +200,15 @@
         
         // Fan ID
         // Usually NULL
-        sprintf(key, "F%dID", i);
-        if ( [smc readKey:key asString:&fanID] ){
-            NSLog(@"Fan ID:\t %@\n", fanID);
-        }
+        //sprintf(key, "F%dID", i);
+        //if ( [smc readKey:key asString:&fanID] ){
+            //NSLog(@"Fan ID:\t %@\n", fanID);
+        //}
         
         // Actual Speed
         sprintf(key, "F%dAc", i);
         if ( [smc readKey:key intoNumber:&fanRPM] ){
-            NSLog(@"Fan Speed (RPM):\t %@\n", fanRPM);
+            //NSLog(@"Fan Speed (RPM):\t %@\n", fanRPM);
             fanNumberDefault = [NSString stringWithFormat:@"fan%dActual", i];
             [sharedDefaults setInteger:[fanRPM intValue] forKey:fanNumberDefault];
             
@@ -223,8 +223,8 @@
         }
         
         // Target Speed
-        sprintf(key, "F%dTg", i);
-        if ( [smc readKey:key intoNumber:&tarRPM] ){
+        //sprintf(key, "F%dTg", i);
+        /*if ( [smc readKey:key intoNumber:&tarRPM] ){
             NSLog(@"Target Speed (RPM):\t %@\n", tarRPM);
             fanNumberDefault = [NSString stringWithFormat:@"fan%dTarget", i];
             [sharedDefaults setInteger:[tarRPM intValue] forKey:fanNumberDefault];
@@ -275,10 +275,10 @@
         
         // Safe Speed
         // Usually NULL
-        sprintf(key, "F%dSf", i);
-        if ( [smc readKey:key intoNumber:&safeRPM] ){
-            NSLog(@"Safe Speed (RPM):\t %@\n", safeRPM);
-        }
+        //sprintf(key, "F%dSf", i);
+        //if ( [smc readKey:key intoNumber:&safeRPM] ){
+          //  NSLog(@"Safe Speed (RPM):\t %@\n", safeRPM);
+        //}*/
         // Add separator
         [menu addItem:[NSMenuItem separatorItem]];
     }
@@ -286,14 +286,15 @@
     // Get temperature
     NSNumber *temp;
     if ( [smc readKey:"TC0P" intoNumber:&temp] ){
-        NSLog(@"CPU Temperature:\t %@", [temp stringValue]);
+        //NSLog(@"CPU Temperature:\t %@", [temp stringValue]);
         temperatureFloat = [temp floatValue];
         
         // Set temperature default
         [sharedDefaults setFloat:temperatureFloat forKey:@"temperature"];
         
+        int rounded = roundf([temp floatValue]);
         // Set title of CPU temp menu label
-        [cpuTempMenuItem setTitleWithMnemonic:[NSString stringWithFormat:@"CPU: %.02f °",[temp floatValue]]];
+        [cpuTempMenuItem setTitleWithMnemonic:[NSString stringWithFormat:@"CPU: %d °", rounded]];
         // Set title color
         NSDictionary *attributes = @{ NSFontAttributeName: [NSFont menuBarFontOfSize:14], NSForegroundColorAttributeName: titleColor };
         NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:[cpuTempMenuItem title] attributes:attributes];
@@ -304,11 +305,11 @@
     }
     
     // Create menu items
-    NSMenuItem *info = [[NSMenuItem alloc]initWithTitle:@"Info" action:@selector(infoClicked:) keyEquivalent:@"i"];
+    //NSMenuItem *info = [[NSMenuItem alloc]initWithTitle:@"Info" action:@selector(infoClicked:) keyEquivalent:@"i"];
     NSMenuItem *quit = [[NSMenuItem alloc]initWithTitle:@"Quit" action:@selector(quitClicked:) keyEquivalent:@"q"];
     
     // Add menu items
-    [menu addItem:info];
+    //[menu addItem:info];
     [menu addItem:quit];
     
     // Update menu
