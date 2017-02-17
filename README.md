@@ -1,3 +1,5 @@
+This is a fork, i've removd all the data that the plugin shows except the current fan speed and CPU temperature
+
 # Fanny
 ### Monitor your Mac's fan speed and CPU temperature from your Notification Center.
 
